@@ -11,6 +11,12 @@ for [English](README.md)
 - OCI CLI: v2.12.11以上
 - Java: 1.8.0_265以上
 
+## 入手方法
+下記のいずれかの方法で入手してください。
+
+- `mvn package -DskipTests=true`を実行する
+- [ここ](https://github.com/syake-salmon/oci-update-lb-certificate/releases)からバイナリをダウンロードする
+
 ## 使い方
 1. JARファイル(-with-dependenciesのほう)を任意の場所に配置する
 2. `java -jar`コマンドを実行する

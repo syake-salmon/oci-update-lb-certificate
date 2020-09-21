@@ -11,6 +11,12 @@
 - OCI CLI: v2.12.11 or higher
 - Java: 1.8.0_265 or higher
 
+## How-to-Get
+There are 2 options.
+
+- Exec `mvn package -DskipTests=true`.
+- Download binary from [here](https://github.com/syake-salmon/oci-update-lb-certificate/releases).
+
 ## How-to-Use
 1. Place the JAR(-with-dependencies) anywhere you want.
 2. Run the JAR with `java -jar` command.
