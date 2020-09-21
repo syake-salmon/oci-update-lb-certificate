@@ -142,21 +142,14 @@ public class Argument {
     /**
      * @return parser
      */
-    public CmdLineParser getParser() { return parser; }
+    public CmdLineParser getParser() {
+        return parser;
+    }
 
     /**
      * @param parser parser to set
      */
-    public void setParser(CmdLineParser parser) { this.parser = parser; }
-
-    /**
-     * Print command-line usage to STDOUT.
-     */
-    public void printUsage() {
-        System.out.println("Usage:");
-        System.out.println("  Exec 'java -jar' command.");
-        System.out.println();
-        System.out.println("Options:");
-        parser.printUsage(System.out);
+    public void setParser(CmdLineParser parser) {
+        this.parser = parser;
     }
 }

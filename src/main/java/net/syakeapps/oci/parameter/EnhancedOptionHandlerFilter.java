@@ -23,36 +23,20 @@ public interface EnhancedOptionHandlerFilter {
     /**
      * @see OptionHandlerFilter#ALL
      */
-    OptionHandlerFilter ALL = new OptionHandlerFilter() {
-        public boolean select(OptionHandler o) {
-            return true;
-        }
-    };
+    OptionHandlerFilter ALL = o -> true;
 
     /**
      * @see OptionHandlerFilter#PUBLIC
      */
-    OptionHandlerFilter PUBLIC = new OptionHandlerFilter() {
-        public boolean select(OptionHandler o) {
-            return !o.option.hidden();
-        }
-    };
+    OptionHandlerFilter PUBLIC = o -> !o.option.hidden();
 
     /**
      * @see OptionHandlerFilter#REQUIRED
      */
-    OptionHandlerFilter REQUIRED = new OptionHandlerFilter() {
-        public boolean select(OptionHandler o) {
-            return o.option.required();
-        }
-    };
+    OptionHandlerFilter REQUIRED = o -> o.option.required();
 
     /**
      * Print all {@linkplain Option#required() required}=false options.
      */
-    OptionHandlerFilter OPTIONAL = new OptionHandlerFilter() {
-        public boolean select(OptionHandler o) {
-            return !o.option.required();
-        }
-    };
+    OptionHandlerFilter OPTIONAL = o -> !o.option.required();
 }

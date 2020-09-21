@@ -4,8 +4,10 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
 
 import org.apache.commons.lang3.StringUtils;
+import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.slf4j.LoggerFactory;
 
@@ -40,6 +42,8 @@ import net.syakeapps.oci.util.BufferedReaderUtil;
 public class UpdateCertificate {
 
     private static final Logger LOG = (Logger) LoggerFactory.getLogger(UpdateCertificate.class);
+    private static final int EXIT_CODE_NORMAL = 0;
+    private static final int EXIT_CODE_ERROR = 9;
 
     private String[] rowArgument;
     private Argument argument;
@@ -60,10 +64,10 @@ public class UpdateCertificate {
             // exec sequence
             new UpdateCertificate(args).run();
             LOG.info("[SUCCESS] Updating certificate is done.");
-            System.exit(0);
+            System.exit(EXIT_CODE_NORMAL);
         } catch (Exception e) {
             LOG.error("[FAILED] Updating certificate is done with some error. Check log output.", e);
-            System.exit(9);
+            System.exit(EXIT_CODE_ERROR);
         }
     }
 
@@ -73,7 +77,7 @@ public class UpdateCertificate {
         updateLbListener();
     }
 
-    private void setup() throws Exception {
+    private void setup() throws CmdLineException, IOException {
         // parse arguments into bean
         argument = new Argument();
         CmdLineParser parser = new CmdLineParser(argument);
@@ -84,16 +88,18 @@ public class UpdateCertificate {
             System.out.println("  Exec 'java -jar' command.");
             System.out.println();
             System.out.println("Required:");
-            parser.printUsage(new OutputStreamWriter(System.out), null, EnhancedOptionHandlerFilter.REQUIRED);
+            parser.printUsage(new OutputStreamWriter(System.out, Charset.forName("UTF-8")), null,
+                    EnhancedOptionHandlerFilter.REQUIRED);
             System.out.println("");
             System.out.println("Optional:");
-            parser.printUsage(new OutputStreamWriter(System.out), null, EnhancedOptionHandlerFilter.OPTIONAL);
-            System.exit(0);
+            parser.printUsage(new OutputStreamWriter(System.out, Charset.forName("UTF-8")), null,
+                    EnhancedOptionHandlerFilter.OPTIONAL);
+            System.exit(EXIT_CODE_NORMAL);
         }
 
         // change log level
         LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
-        Logger root = context.getLogger(Logger.ROOT_LOGGER_NAME);
+        Logger root = context.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
         if (argument.debugFlag()) {
             root.setLevel(Level.DEBUG);
         } else {
@@ -114,7 +120,8 @@ public class UpdateCertificate {
             try (BufferedReader reader = new BufferedReader(new FileReader(argument.caCertFile()))) {
                 builder.caCertificate(BufferedReaderUtil.bufferedReaderToString(reader));
             } catch (IOException e) {
-                throw new Exception("An error occured while reading CA cert file. [" + argument.caCertFile() + "]", e);
+                throw new IOException("An error occured while reading CA cert file. [" + argument.caCertFile() + "]",
+                        e);
             }
         }
 
@@ -122,8 +129,8 @@ public class UpdateCertificate {
             try (BufferedReader reader = new BufferedReader(new FileReader(argument.privkeyFile()))) {
                 builder.privateKey(BufferedReaderUtil.bufferedReaderToString(reader));
             } catch (IOException e) {
-                throw new Exception("An error occured while reading private key file. [" + argument.privkeyFile() + "]",
-                        e);
+                throw new IOException(
+                        "An error occured while reading private key file. [" + argument.privkeyFile() + "]", e);
             }
         }
 
@@ -131,8 +138,8 @@ public class UpdateCertificate {
             try (BufferedReader reader = new BufferedReader(new FileReader(argument.pubCertFile()))) {
                 builder.publicCertificate(BufferedReaderUtil.bufferedReaderToString(reader));
             } catch (IOException e) {
-                throw new Exception("An error occured while reading public cert file. [" + argument.pubCertFile() + "]",
-                        e);
+                throw new IOException(
+                        "An error occured while reading public cert file. [" + argument.pubCertFile() + "]", e);
             }
         }
 
@@ -151,8 +158,8 @@ public class UpdateCertificate {
             client.getWaiters()
                     .forWorkRequest(
                             GetWorkRequestRequest.builder().workRequestId(response.getOpcWorkRequestId()).build(),
-                            new MaxTimeTerminationStrategy(argument.maxWaitSec() * 1000),
-                            new FixedTimeDelayStrategy(argument.waitIntervalSec() * 1000))
+                            new MaxTimeTerminationStrategy((long) argument.maxWaitSec() * 1000),
+                            new FixedTimeDelayStrategy((long) argument.waitIntervalSec() * 1000))
                     .execute();
         }
     }
@@ -190,8 +197,8 @@ public class UpdateCertificate {
             client.getWaiters()
                     .forWorkRequest(
                             GetWorkRequestRequest.builder().workRequestId(response.getOpcWorkRequestId()).build(),
-                            new MaxTimeTerminationStrategy(argument.maxWaitSec() * 1000),
-                            new FixedTimeDelayStrategy(argument.waitIntervalSec() * 1000))
+                            new MaxTimeTerminationStrategy((long) argument.maxWaitSec() * 1000),
+                            new FixedTimeDelayStrategy((long) argument.waitIntervalSec() * 1000))
                     .execute();
         }
     }

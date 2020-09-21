@@ -9,6 +9,10 @@ import java.util.stream.Collectors;
  */
 public class BufferedReaderUtil {
 
+    private BufferedReaderUtil() {
+        // NOP
+    }
+
     /**
      * Convert BufferedReader to String.
      * 
