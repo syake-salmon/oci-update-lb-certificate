@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.nio.charset.Charset;
 
 import org.apache.commons.lang3.StringUtils;
 import org.kohsuke.args4j.CmdLineException;
@@ -88,12 +87,10 @@ public class UpdateCertificate {
             System.out.println("  Exec 'java -jar' command.");
             System.out.println();
             System.out.println("Required:");
-            parser.printUsage(new OutputStreamWriter(System.out, Charset.forName("UTF-8")), null,
-                    EnhancedOptionHandlerFilter.REQUIRED);
+            parser.printUsage(new OutputStreamWriter(System.out), null, EnhancedOptionHandlerFilter.REQUIRED);
             System.out.println("");
             System.out.println("Optional:");
-            parser.printUsage(new OutputStreamWriter(System.out, Charset.forName("UTF-8")), null,
-                    EnhancedOptionHandlerFilter.OPTIONAL);
+            parser.printUsage(new OutputStreamWriter(System.out), null, EnhancedOptionHandlerFilter.OPTIONAL);
             System.exit(EXIT_CODE_NORMAL);
         }
 
