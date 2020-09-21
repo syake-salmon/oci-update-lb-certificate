@@ -19,7 +19,7 @@ public class Argument {
     @Option(name = "--ca-certificate-file", usage = "[TEXT] The Certificate Authority certificate, or any interim certificate, that you received from your SSL certificate provider.")
     private String caCertFile;
 
-    @Option(name = "--max-wait-seconds", usage = "[TEXT] The maximum time to wait for the work request.")
+    @Option(name = "--max-wait-seconds", usage = "[INTEGER] The maximum time to wait for the work request.")
     private int maxWaitSec = 1200;
 
     @Option(name = "--passphrase", usage = "[TEXT] A passphrase for encrypted private keys. This is needed only if you created your certificate with a passphrase.")
@@ -31,13 +31,13 @@ public class Argument {
     @Option(name = "--public-certificate-file", usage = "[FILENAME] The public certificate, in PEM format, that you received from your SSL certificate provider.")
     private String pubCertFile;
 
-    @Option(name = "--wait-interval-seconds", usage = "[INTEGER] Check every --wait-interval-seconds to see whether the work request to see if it has reached the state.")
+    @Option(name = "--wait-interval-seconds", usage = "[INTEGER] Check every --wait-interval-seconds to see whether the work request to see if it has done.")
     private int waitIntervalSec = 30;
 
-    @Option(name = "--config-file", usage = "[FILENAME] The path to the config file.")
+    @Option(name = "--config-file", usage = "[FILENAME] The path to the OCI-CLI config file.")
     private String configFile = "~/.oci/config";
 
-    @Option(name = "--profile", usage = "[TEXT] The profile in the config file to load.")
+    @Option(name = "--profile", usage = "[TEXT] The profile in the OCI-CLI config file to load.")
     private String profile = "DEFAULT";
 
     @Option(name = "-d", aliases = { "--debug" }, usage = "For debug level log output.")
