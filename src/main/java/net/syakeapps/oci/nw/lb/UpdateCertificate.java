@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.kohsuke.args4j.CmdLineException;
@@ -172,13 +173,14 @@ public class UpdateCertificate {
                     .get(argument.listenerName());
         }
 
-        // acquire current listener SSL setting
+        // acquire current listener setting
         SSLConfiguration currentSslConfiguration = listener.getSslConfiguration();
+        List<String> currentRuleSets = listener.getRuleSetNames();
 
         // build request details
         UpdateListenerDetails details = UpdateListenerDetails.builder()
                 .defaultBackendSetName(listener.getDefaultBackendSetName()).port(listener.getPort())
-                .protocol(listener.getProtocol())
+                .protocol(listener.getProtocol()).ruleSetNames(currentRuleSets)
                 .sslConfiguration(SSLConfigurationDetails.builder().certificateName(argument.certName())
                         .verifyPeerCertificate(currentSslConfiguration.getVerifyPeerCertificate())
                         .verifyDepth(currentSslConfiguration.getVerifyDepth()).build())
